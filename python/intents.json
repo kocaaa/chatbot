@@ -1,0 +1,98 @@
+{
+    "intents": [
+        {
+            "tag": "greeting",
+            "patterns": [
+                "Hi",
+                "Hey",
+                "How are you",
+                "Is anyone there?",
+                "Hello",
+                "Good day",
+                "Whats up"
+            ],
+            "responses": [
+                "Hello, thanks for visiting",
+                "Good to see you again",
+                "Hi there, how can I help?"
+            ]
+        },
+        {
+            "tag": "goodbye",
+            "patterns": [
+                "Bye",
+                "See you later",
+                "Goodbye",
+                "Have a nice day",
+                "See you soon",
+                "Have a good day"
+            ],
+            "responses": [
+                "See you later, thanks for visiting",
+                "Have a nice day",
+                "Bye! Come back again soon."
+            ]
+        },
+        {
+            "tag": "age",
+            "patterns": [
+                "How old are you?",
+                "What is your age?",
+                "What's your age?",
+                "How old are you"
+            ],
+            "responses": [
+                "My owner Koca is 22 year old",
+                "22 years"
+            ]
+        },
+        {
+            "tag": "name",
+            "patterns": [
+                "What is your name?",
+                "What should I call you?",
+                "What can I call you?",
+                "What's your name?",
+                "What are you called?",
+                "What do you call yourself?",
+                "What's your name"
+            ],
+            "responses": [
+                "You can call me imiBot",
+                "I'm imiBot"
+            ]
+        },
+        {
+            "tag":"shop",
+            "patterns": [
+                "Where can I buy?",
+                "Where can I buy"
+            ],
+            "responses": [
+                "You can buy from our website",
+                "You can buy from our website"
+            ]
+        },
+        {
+            "tag": "hours",
+            "patterns": [
+                "What are your hours?",
+                "What are your hours",
+                "What are your opening hours?",
+                "What are your opening hours",
+                "What are your working hours?",
+                "What are your working hours",
+                "What time do you open?",
+                "What time do you open",
+                "What time do you close?",
+                "What time do you close",
+                "What time do you open and close?",
+                "What time do you open and close"
+            ],
+            "responses": [
+                "We are open from 9am to 5pm",
+                "We are open from 9am to 5pm"
+            ]
+        }
+    ]
+}
