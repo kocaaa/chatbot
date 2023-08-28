@@ -1,15 +1,21 @@
 package com.chatbot.chatbot.models;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
+import javax.persistence.*;
+
+@Table(name = "employees")
+@Entity
+@Builder
 @Getter
 @Setter
-@Builder
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class Employee {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
     private String title;
     private String cabinet;
