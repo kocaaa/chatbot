@@ -62,6 +62,7 @@ while True:
     message = input("You: ")
     ints = predict_class(message)
     res = getResponse(ints, intents)
+    print(ints[0]['intent'])
     print("Bot: ",res)
 
 # Path: chatbot.py
