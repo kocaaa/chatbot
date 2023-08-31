@@ -49,7 +49,7 @@ def predict_class(sentence):
         return_list.append({"intent": classes[r[0]], "probability": str(r[1])})
     return return_list
 
-def getResponse(ints, intents_json):
+def get_response(ints, intents_json):
     tag = ints[0]['intent']
     list_of_intents = intents_json['intents']
     for i in list_of_intents:
@@ -58,11 +58,11 @@ def getResponse(ints, intents_json):
             break
     return result
 
-while True:
-    message = input("You: ")
-    ints = predict_class(message)
-    res = getResponse(ints, intents)
-    print(ints[0]['intent'])
-    print("Bot: ",res)
+# while True:
+#     message = input("You: ")
+#     ints = predict_class(message)
+#     res = get_response(ints, intents)
+#     print(ints[0]['intent'])
+#     print("Bot: ",res)
 
 # Path: chatbot.py
