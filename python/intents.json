@@ -63,12 +63,13 @@
             "tag": "contact_email",
             "patterns": [
                 "Koji je email profesora",
-                "Koji je email asistenta",
-                "Kakav je email",
+                "Koji je email",
                 "Kako mogu da kontaktiram",
                 "Kako da pošaljem email",
                 "Kako da stupim u kontakt sa",
-                "Koja je adresa emaila"
+                "Koji je mail profesora",
+                "Koji je mail",
+                "Kako da pošaljem mail"
             ],
             "responses": [
                 "Koji je email"

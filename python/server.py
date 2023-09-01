@@ -1,32 +1,30 @@
-import fastapi
-import uvicorn
-from pydantic import BaseModel
 import json
+import uvicorn
+from models import Message, Response
+from fastapi import FastAPI
 
-from training import train
-from chatbot import get_response,predict_class
-
-class Message(BaseModel):
-    question: str
+import chatbot
+import training
 
 host = "127.0.0.1"
 port = 10046
 
+training.train()
+
 intents = json.loads(open('intents.json').read())
-train()
-
-app = fastapi.FastAPI()
-
-
-@app.get("/example")
-def count_faces():
-    return {"response": "example"}
+app = FastAPI()
 
 @app.post("/question")
 async def question(message: Message):
-    ints = predict_class(message.question)
-    res = get_response(ints, intents)
-    return {"response": res}
+    intents = chatbot.predict_class(message.question)
+    probability = float(intents[0]["probability"])
+
+    if probability > chatbot.bad_input():
+        response = Response(intents[0]['intent'], probability)
+    else:
+        response = Response("bad_question", probability)
+        
+    return response
 
 if __name__ == "__main__":
     uvicorn.run(app, host=host, port=port)

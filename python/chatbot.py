@@ -1,12 +1,12 @@
-import random
 import json
 import pickle
+import random
 import numpy as np
+
+from keras.models import load_model
 
 import nltk
 from nltk.stem import WordNetLemmatizer
-
-from tensorflow.keras.models import load_model
 
 lemmatizer = WordNetLemmatizer()
 intents = json.loads(open('intents.json').read())
@@ -57,6 +57,9 @@ def get_response(ints, intents_json):
             result = random.choice(i['responses'])
             break
     return result
+
+def bad_input():
+    return float(predict_class("qwertyuiop")[0]["probability"])
 
 # while True:
 #     message = input("You: ")
