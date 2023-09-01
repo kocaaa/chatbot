@@ -2,7 +2,7 @@ package com.chatbot.chatbot.enums;
 
 import java.util.Locale;
 
-public enum Questions {
+public enum Question {
     EXAM_REGISTRATION("exam_registration"),
     PROFESSOR_SUBJECT("professor_subject"),
     ASSISTANT_SUBJECT("assistant_subject"),
@@ -13,11 +13,11 @@ public enum Questions {
 
     private final String action;
 
-    Questions(String action) {
+    Question(String action) {
         this.action = action;
     }
 
-    public static Questions parse(String action) {
+    public static Question parse(String action) {
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "exam_registration" -> EXAM_REGISTRATION;
             case "professor_subject" -> PROFESSOR_SUBJECT;

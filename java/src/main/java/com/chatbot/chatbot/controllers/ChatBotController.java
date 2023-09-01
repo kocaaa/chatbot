@@ -3,6 +3,7 @@ package com.chatbot.chatbot.controllers;
 import com.chatbot.chatbot.models.PyMessage;
 import com.chatbot.chatbot.models.PyResponse;
 import com.chatbot.chatbot.services.PythonService;
+import com.chatbot.chatbot.services.QuestionService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,18 +16,22 @@ import java.io.IOException;
 @RequestMapping("/chatbot")
 public class ChatBotController {
     private final PythonService pythonService;
+    private final QuestionService questionService;
 
     @Autowired
-    public ChatBotController(PythonService pythonService) {
+    public ChatBotController(PythonService pythonService, QuestionService questionService) {
         this.pythonService = pythonService;
+        this.questionService = questionService;
     }
 
     @PostMapping("/getMessage")
-    public PyResponse getMessageFromFastApi(@RequestBody PyMessage pyMessage) throws JSONException {
+    public String getMessageFromFastApi(@RequestBody PyMessage pyMessage) throws JSONException {
         log.info("Endpoint /getMessage triggered with RequestBody [{}]", pyMessage);
         PyResponse pyResponse = pythonService.getChatBotResponse(pyMessage);
-        log.info("Received response [{}] from FastAPI", pyResponse);
+        log.info("Received response [{}] from FastAPI. Calling question service.", pyResponse);
+        String response = questionService.processResponse(pyResponse, pyMessage);
+        log.info("Received [{}] response from question service", response);
 
-        return pyResponse;
+        return response;
     }
 }
