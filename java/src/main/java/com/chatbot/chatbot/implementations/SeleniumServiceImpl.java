@@ -25,7 +25,7 @@ public class SeleniumServiceImpl implements SeleniumService {
     private static final String EMPLOYEE_ROW_CLASS = "nastavnici_row";
     private static final String EMPLOYEE_CELL_NAME = "ime_nastavnika";
     private static final String EMPLOYEE_CELL_TITLE = "zvanje_nastavnika";
-    private static final String EMPLOYEE_CELL_CABINET = "ime_nastavnika";
+    private static final String EMPLOYEE_CELL_CABINET = "kabinet_nastavnika";
     private static final String EMPLOYEE_CELL_LOCALE = "lokal_nastavnika";
     private static final String EMPLOYEE_CELL_EMAIL = "mail_nastavnika";
     private static final String EMPLOYEE_CELL_CONSULTATION = "konsultacije_nastavnika";
