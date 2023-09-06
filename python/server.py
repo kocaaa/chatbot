@@ -5,6 +5,7 @@ from fastapi import FastAPI
 
 import chatbot
 import training
+import excel
 
 host = "127.0.0.1"
 port = 10046
@@ -25,6 +26,10 @@ async def question(message: Message):
         response = Response("bad_question", probability)
         
     return response
+
+@app.get("/allClasses")
+async def allClasses():
+    return excel.getAllClasses()
 
 if __name__ == "__main__":
     uvicorn.run(app, host=host, port=port)
