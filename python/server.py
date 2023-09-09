@@ -27,9 +27,9 @@ async def question(message: Message):
         
     return response
 
-@app.get("/allClasses")
-async def allClasses():
-    return excel.getAllClasses()
+@app.get("/all_subjects")
+async def all_subjects():
+    return excel.get_all_subjects()
 
 if __name__ == "__main__":
     uvicorn.run(app, host=host, port=port)

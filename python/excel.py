@@ -23,7 +23,7 @@ def cirilica_u_latinicu_dataframe(df):
     
     return df
     
-def getAllClasses():
+def get_all_subjects():
     dataframe = pd.read_excel("employees.xlsx", sheet_name="OAS 2022-23")
     
     dataframe = cirilica_u_latinicu_dataframe(dataframe)
@@ -47,9 +47,3 @@ def getAllClasses():
                 new_class = None
         
     return classes
-
-
-classes = getAllClasses()
-
-for c in classes:
-    print(c)

@@ -1,10 +1,13 @@
 package com.chatbot.chatbot.controllers;
 
 import com.chatbot.chatbot.models.Course;
+import com.chatbot.chatbot.models.Subject;
 import com.chatbot.chatbot.repositories.CourseDao;
+import com.chatbot.chatbot.services.PythonService;
 import com.chatbot.chatbot.services.SeleniumService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,12 +21,14 @@ import java.util.List;
 @RequestMapping("/courses")
 public class CourseController {
     private final SeleniumService seleniumService;
+    private final PythonService pythonService;
     private final CourseDao courseDao;
 
-    @GetMapping("/all")
-    public List<Course> getAllCourses(){
-        return seleniumService.getAllCourses();
-    }
+//    @Deprecated
+//    @GetMapping("/all")
+//    public List<Course> getAllCourses(){
+//        return seleniumService.getAllCourses();
+//    }
 
     @PostMapping("/populate")
     public List<Course> populateCourses() {
@@ -39,4 +44,10 @@ public class CourseController {
 
         return courses;
     }
+
+    @GetMapping("/all")
+    public List<Subject> getAllSubjects() throws JSONException {
+        return pythonService.getAllSubjects();
+    }
+
 }
