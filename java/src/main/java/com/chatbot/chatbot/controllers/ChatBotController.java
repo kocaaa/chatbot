@@ -25,13 +25,14 @@ public class ChatBotController {
     }
 
     @PostMapping("/getMessage")
-    public String getMessageFromFastApi(@RequestBody PyMessage pyMessage) throws JSONException {
+    public PyMessage getMessageFromFastApi(@RequestBody PyMessage pyMessage) throws JSONException {
         log.info("Endpoint /getMessage triggered with RequestBody [{}]", pyMessage);
         PyResponse pyResponse = pythonService.getChatBotResponse(pyMessage);
         log.info("Received response [{}] from FastAPI. Calling question service.", pyResponse);
         String response = questionService.processResponse(pyResponse, pyMessage);
         log.info("Received [{}] response from question service", response);
 
-        return response;
+        pyMessage.setQuestion(response);
+        return pyMessage;
     }
 }

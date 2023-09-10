@@ -1,21 +1,17 @@
 package com.chatbot.chatbot.implementations;
 
 import com.chatbot.chatbot.enums.Question;
-import com.chatbot.chatbot.models.Course;
-import com.chatbot.chatbot.models.Employee;
-import com.chatbot.chatbot.models.PyMessage;
-import com.chatbot.chatbot.models.PyResponse;
-import com.chatbot.chatbot.repositories.CourseDao;
+import com.chatbot.chatbot.models.*;
 import com.chatbot.chatbot.repositories.EmployeeDao;
+import com.chatbot.chatbot.services.PythonService;
 import com.chatbot.chatbot.services.QuestionService;
 import com.chatbot.chatbot.utils.LatinUtil;
+import org.json.JSONException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 import static com.chatbot.chatbot.utils.LevenshteinUtil.findMostSimilarDistance;
-import static org.apache.logging.log4j.util.Strings.isBlank;
-import static org.apache.logging.log4j.util.Strings.isNotBlank;
 
 @Service
 public class QuestionServiceImpl implements QuestionService {
@@ -23,25 +19,24 @@ public class QuestionServiceImpl implements QuestionService {
     private static final String UNSUPPORTED_QUESTION = "Ne umem da odgovorim na ovo pitanje";
     private static final int MINIMAL_NAME_LENGTH = 2;
     private static final int NO_MINIMAL_LENGTH = 0;
-
+    private final PythonService pythonService;
     private final EmployeeDao employeeDao;
-    private final CourseDao courseDao;
 
-    public QuestionServiceImpl(EmployeeDao employeeDao, CourseDao courseDao) {
+    public QuestionServiceImpl(PythonService pythonService, EmployeeDao employeeDao) {
+        this.pythonService = pythonService;
         this.employeeDao = employeeDao;
-        this.courseDao = courseDao;
     }
 
     @Override
-    public String processResponse(PyResponse response, PyMessage message) {
+    public String processResponse(PyResponse response, PyMessage message) throws JSONException {
         return processQuestion(response.getQuestion(), message.getQuestion());
     }
 
-    private String processQuestion(Question question, String message) {
+    private String processQuestion(Question question, String message) throws JSONException {
         return switch (question) {
             case EXAM_REGISTRATION -> processExamRegistration();
             case PROFESSOR_SUBJECT -> processProfessorSubject(message);
-            case ASSISTANT_SUBJECT -> processAssistantSubject();
+            case ASSISTANT_SUBJECT -> processAssistantSubject(message);
             case CONSULTATIONS -> processConsultations(message);
             case CONTACT_EMAIL -> predictEmail(message);
             case OFFICE_LOCATION -> processOfficeLocation(message);
@@ -53,14 +48,12 @@ public class QuestionServiceImpl implements QuestionService {
         return null;
     }
 
-    private String processProfessorSubject(String question) {
-        Course predictedCourse = predictCourse(question);
+    private String processProfessorSubject(String question) throws JSONException {
+        Subject predictedSubject = predictSubject(question);
         String predictedProfessor;
 
-        if (predictedCourse != null && isNotBlank(predictedCourse.getProfessor())) {
-            predictedProfessor = predictedCourse.getName() + " predaje " +  predictedCourse.getProfessor();
-        } else if (predictedCourse != null && isNotBlank(predictedCourse.getUrl())) {
-            predictedProfessor = "Probajte da pronadjete vise informacija na " +  predictedCourse.getUrl();
+        if (predictedSubject != null) {
+            predictedProfessor = "Predmet " + predictedSubject.getName() + " predaje " +  predictedSubject.getProfessor();
         } else {
             predictedProfessor = "Nisam uspeo da pronadjem informacije o predmetu.";
         }
@@ -68,29 +61,36 @@ public class QuestionServiceImpl implements QuestionService {
         return predictedProfessor;
     }
 
-    private Course predictCourse(String question) {
-        Course predictedCourse = null;
+    private Subject predictSubject(String question) throws JSONException {
+        Subject predictedSubject = null;
         int minDistance = Integer.MAX_VALUE;
-
-        List<Course> courses = courseDao.findAll();
-
         question = LatinUtil.convertToLowerAlphabet(question);
 
-        for (Course course : courses) {
-            int currentDistance = calculateCurrentDistance(question, course.getName(), NO_MINIMAL_LENGTH);
+        List<Subject> subjects = pythonService.getAllSubjects();
 
-            if (currentDistance < minDistance ||
-                    (currentDistance == minDistance && predictedCourse != null && isBlank(predictedCourse.getProfessor()))) {
-                predictedCourse = course;
+        for (Subject subject : subjects) {
+            int currentDistance = calculateCurrentDistance(question, subject.getName(), NO_MINIMAL_LENGTH);
+
+            if (currentDistance < minDistance) {
+                predictedSubject = subject;
                 minDistance = currentDistance;
             }
         }
 
-        return predictedCourse;
+        return predictedSubject;
     }
 
-    private String processAssistantSubject() {
-        return null;
+    private String processAssistantSubject(String question) throws JSONException {
+        Subject predictedSubject = predictSubject(question);
+        String predictedAssistants;
+
+        if (predictedSubject != null) {
+            predictedAssistants = "Asistenti na " + predictedSubject.getName() + " su " +  String.join(", ", predictedSubject.getAssistants());
+        } else {
+            predictedAssistants = "Nisam uspeo da pronadjem asistente na predmetu.";
+        }
+
+        return predictedAssistants;
     }
 
     private String processConsultations(String question) {

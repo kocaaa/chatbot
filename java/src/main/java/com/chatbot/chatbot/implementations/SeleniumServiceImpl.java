@@ -19,7 +19,6 @@ import java.util.List;
 
 @Service
 public class SeleniumServiceImpl implements SeleniumService {
-
     private static final String EMPLOYEE_URL = "https://imi.pmf.kg.ac.rs/nastavno-osoblje";
     private static final String MOODLE_URL = "https://imi.pmf.kg.ac.rs/moodle/";
     private static final String EMPLOYEE_ROW_CLASS = "nastavnici_row";
@@ -52,6 +51,7 @@ public class SeleniumServiceImpl implements SeleniumService {
         return extractEmployees(employeeRows);
     }
 
+    @Deprecated
     @Override
     @Cacheable("courses")
     public List<Course> getAllCourses() {
@@ -158,10 +158,8 @@ public class SeleniumServiceImpl implements SeleniumService {
             }
 
             if (element.getText().equals("Predmetni nastavnik:")) {
-                System.out.println(element.getAttribute("innerHTML"));
                 if(isElementPresent(By.xpath(".//*[text()[contains(.,\"Predmetni nastavn\")]]/following-sibling::b[1]/a"))) {
                     element = webDriver.findElement(By.xpath(".//*[text()[contains(.,\"Predmetni nastavn\")]]/following-sibling::b[1]/a"));
-                    System.out.println(element.getText());
                 }
             }
         }

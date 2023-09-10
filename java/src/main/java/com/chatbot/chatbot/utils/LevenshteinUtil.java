@@ -1,6 +1,9 @@
 package com.chatbot.chatbot.utils;
 
 public class LevenshteinUtil {
+    private LevenshteinUtil() {
+
+    }
 
     public static Integer findMostSimilarDistance(String target, String sentence) {
         String[] words = sentence.split("\\s+");

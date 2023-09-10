@@ -3,7 +3,7 @@ class Chatbox {
         this.args = {
             openButton: document.querySelector('.chatbox__button'),
             chatBox: document.querySelector('.chatbox__support'),
-            sendButton: document.querySelector('.send__button')
+            sendButton: document.querySelector('.send__button'),
         }
 
         this.state = false;
@@ -46,9 +46,9 @@ class Chatbox {
         let msg1 = { name: "User", message: text1 }
         this.messages.push(msg1);
 
-        fetch('http://127.0.0.1:5000/predict', {
+        fetch('http://localhost:8080/chatbot/getMessage', {
             method: 'POST',
-            body: JSON.stringify({ message: text1 }),
+            body: JSON.stringify({ question: text1 }),
             mode: 'cors',
             headers: {
               'Content-Type': 'application/json'
@@ -56,7 +56,8 @@ class Chatbox {
           })
           .then(r => r.json())
           .then(r => {
-            let msg2 = { name: "Sam", message: r.answer };
+            console.log(r);
+            let msg2 = { name: "Sam", message: r.question };
             this.messages.push(msg2);
             this.updateChatText(chatbox)
             textField.value = ''

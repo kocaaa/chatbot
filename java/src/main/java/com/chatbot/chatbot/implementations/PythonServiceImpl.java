@@ -20,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -57,6 +58,7 @@ public class PythonServiceImpl implements PythonService {
         return pyResponse;
     }
 
+    @Cacheable("subjects")
     @Override
     public List<Subject> getAllSubjects() throws JSONException {
         List<Subject> subjects = new ArrayList<>();
@@ -93,7 +95,6 @@ public class PythonServiceImpl implements PythonService {
     }
 
     private List<Subject> parseToSubjects(JSONArray jsonArray) throws JSONException {
-
         List<Subject> subjects = new ArrayList<>();
 
         for (int i = 0; i < jsonArray.length(); i++) {
@@ -113,8 +114,6 @@ public class PythonServiceImpl implements PythonService {
                             .assistants(assistants)
                         .build()
             );
-
-
         }
 
         return subjects;

@@ -37,9 +37,12 @@
             "patterns": [
                 "Koji asistent je na",
                 "Koji asistent pomaže kod",
+                "Ko je asistent",
                 "Ko je asistent za",
                 "Ko je zadužen kao asistent za",
-                "Koji asistent radi na predmetu"
+                "Koji asistent radi na predmetu",
+                "Ko su asistenti na",
+                "Ko je asistent na"
             ],
             "responses": [
                 "Ko je asistent je na"
