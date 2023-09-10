@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Subject {
     String name;
+    String initials;
     String professor;
     List<String> assistants;
 }

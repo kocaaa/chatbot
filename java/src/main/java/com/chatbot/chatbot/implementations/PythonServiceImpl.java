@@ -110,6 +110,7 @@ public class PythonServiceImpl implements PythonService {
             subjects.add(
                     Subject.builder()
                             .name(jsonObject.getString("name"))
+                            .initials(jsonObject.getString("initials"))
                             .professor(jsonObject.getString("professor"))
                             .assistants(assistants)
                         .build()

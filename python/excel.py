@@ -22,6 +22,17 @@ def cirilica_u_latinicu_dataframe(df):
             df[kolona] = df[kolona].apply(lambda x: ''.join([zamene.get(c, c) for c in str(x)]))
     
     return df
+
+def get_first_letters(input_string):
+    words = input_string.split()
+    valid_words = []
+
+    for word in words:
+        if len(word) >= 3 or (len(word) == 1 and word.isdigit()):
+            valid_words.append(word[0])
+
+    result = ''.join(valid_words).lower()
+    return result
     
 def get_all_subjects():
     dataframe = pd.read_excel("employees.xlsx", sheet_name="OAS 2022-23")
@@ -40,6 +51,7 @@ def get_all_subjects():
                 if new_class is not None:
                     classes.append(new_class)
                 new_class = Class(row[CLASS].split("+")[0].split("\n")[0].strip(), row[PROFESSOR].strip())
+                new_class.initials = get_first_letters(new_class.name)
             new_class.add_assistant(row[ASSISTANT].strip())
         else:
             if new_class is not None:

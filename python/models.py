@@ -13,6 +13,7 @@ class Response:
 
 class Class:
     name : str = None
+    initials : str = None
     professor : str = None
     assistants : set = None
     

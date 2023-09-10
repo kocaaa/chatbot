@@ -70,10 +70,11 @@ public class QuestionServiceImpl implements QuestionService {
 
         for (Subject subject : subjects) {
             int currentDistance = calculateCurrentDistance(question, subject.getName(), NO_MINIMAL_LENGTH);
+            int initialDistance = calculateCurrentDistance(question, subject.getInitials(), NO_MINIMAL_LENGTH);
 
-            if (currentDistance < minDistance) {
+            if (currentDistance < minDistance || initialDistance == 0) {
                 predictedSubject = subject;
-                minDistance = currentDistance;
+                minDistance = initialDistance == 0 ? initialDistance : currentDistance;
             }
         }
 
