@@ -25,6 +25,9 @@ body {
     position: absolute;
     bottom: 30px;
     right: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
 }
 
 /* CONTENT IS CLOSE */
@@ -37,11 +40,12 @@ body {
     z-index: -123456;
     opacity: 0;
     transition: all .5s ease-in-out;
+    margin-right: 20px;
 }
 
 /* CONTENT ISOPEN */
 .chatbox--active {
-    transform: translateY(-40px);
+    transform: translateY(-10px);
     z-index: 123456;
     opacity: 1;
 
