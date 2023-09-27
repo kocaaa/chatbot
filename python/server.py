@@ -3,9 +3,10 @@ import uvicorn
 from models import Message, Response
 from fastapi import FastAPI
 
+import pdf
+import excel
 import chatbot
 import training
-import excel
 
 host = "127.0.0.1"
 port = 10046
@@ -30,6 +31,10 @@ async def question(message: Message):
 @app.get("/all_subjects")
 async def all_subjects():
     return excel.get_all_subjects()
+
+@app.get("/all_exam_schedules")
+async def schedule():
+    return pdf.get_exam_schedule_hierarchy()
 
 if __name__ == "__main__":
     uvicorn.run(app, host=host, port=port)
