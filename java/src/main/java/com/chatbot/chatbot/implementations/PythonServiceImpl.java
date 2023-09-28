@@ -3,9 +3,10 @@ package com.chatbot.chatbot.implementations;
 import com.chatbot.chatbot.models.PyMessage;
 import com.chatbot.chatbot.models.PyResponse;
 import com.chatbot.chatbot.models.Subject;
+import com.chatbot.chatbot.models.YearExams;
 import com.chatbot.chatbot.services.PythonService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.CollectionType;
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -31,8 +32,9 @@ import java.util.List;
 @Service
 public class PythonServiceImpl implements PythonService {
     private final String fastApiEndpoint;
-    private static final String CHAT_BOT_PY_ENDPOINT = "/question";
-    private static final String SUBJECTS_PY_ENDPOINT = "/all_subjects";
+    private static final String CHAT_BOT_ENDPOINT = "/question";
+    private static final String SUBJECTS_ENDPOINT = "/all_subjects";
+    private static final String EXAM_SCHEDULE_ENDPOINT = "/all_exam_schedules";
 
     @Autowired
     public PythonServiceImpl(@Value("${python.fastapi.chatbot.endpoint}") String fastApiEndpoint) {
@@ -64,7 +66,7 @@ public class PythonServiceImpl implements PythonService {
         List<Subject> subjects = new ArrayList<>();
 
         try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
-            HttpResponse response = getResponse(httpClient);
+            HttpResponse response = getResponse(httpClient, SUBJECTS_ENDPOINT);
 
             String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
             subjects = parseToSubjects(new JSONArray(responseString));
@@ -76,14 +78,43 @@ public class PythonServiceImpl implements PythonService {
         return subjects;
     }
 
-    private HttpResponse getResponse(CloseableHttpClient httpClient) throws IOException {
-        HttpGet request = new HttpGet(fastApiEndpoint + SUBJECTS_PY_ENDPOINT);
+    @Override
+    public List<YearExams> getExamSchedule() throws JSONException {
+        List<YearExams> examSchedule = new ArrayList<>();
+
+        try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+            HttpResponse response = getResponse(httpClient, EXAM_SCHEDULE_ENDPOINT);
+
+            String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+            examSchedule = parseExamSchedule(new JSONArray(responseString));
+        } catch (IOException e) {
+            log.error("Error occurred while sending POST request to FastAPI");
+            e.printStackTrace();
+        }
+
+        return examSchedule;
+    }
+
+    private List<YearExams> parseExamSchedule(JSONArray jsonArray) throws JSONException {
+        Gson gson = new Gson();
+        List<YearExams> examSchedule = new ArrayList<>();
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            examSchedule.add(gson.fromJson(jsonObject.toString(), YearExams.class));
+        }
+
+        return examSchedule;
+    }
+
+    private HttpResponse getResponse(CloseableHttpClient httpClient, String endpoint) throws IOException {
+        HttpGet request = new HttpGet(fastApiEndpoint + endpoint);
         request.addHeader("content-type", "application/json");
         return httpClient.execute(request);
     }
 
     private HttpResponse postResponse(CloseableHttpClient httpClient, JSONObject requestBody) throws IOException {
-        HttpPost request = new HttpPost(fastApiEndpoint + CHAT_BOT_PY_ENDPOINT);
+        HttpPost request = new HttpPost(fastApiEndpoint + CHAT_BOT_ENDPOINT);
         request.addHeader("content-type", "application/json");
         request.setEntity(new StringEntity(requestBody.toString()));
         return httpClient.execute(request);
