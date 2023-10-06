@@ -1,0 +1,9 @@
+keras-models
+nltk
+numpy
+pandas
+uvicorn
+fastapi
+tensorflow
+openpyxl
+pdfplumber

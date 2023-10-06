@@ -1,0 +1,28 @@
+version: "3"
+services:
+  server:
+    build: ./java
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/chatbot?useSSL=false&createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USER: root
+      SPRING_DATASOURCE_PASSWORD: root
+  mysql:
+    image: "mysql:5.7"
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+  python:
+    build: ./python
+    restart: always
+    ports:
+      - 10046:10046
+networks:
+  mynetwork:
+    driver: bridge
