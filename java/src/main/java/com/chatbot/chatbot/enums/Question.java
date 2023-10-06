@@ -9,6 +9,7 @@ public enum Question {
     CONSULTATIONS("consultations"),
     CONTACT_EMAIL("contact_email"),
     OFFICE_LOCATION("office_location"),
+    EXAM_SCHEDULE("exam_schedule"),
     UNSUPPORTED_QUESTION("unsupported_question");
 
     private final String action;
@@ -25,6 +26,7 @@ public enum Question {
             case "consultations" -> CONSULTATIONS;
             case "contact_email" -> CONTACT_EMAIL;
             case "office_location" -> OFFICE_LOCATION;
+            case "exam_schedule" -> EXAM_SCHEDULE;
             default -> UNSUPPORTED_QUESTION;
         };
     }

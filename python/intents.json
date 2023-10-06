@@ -1,22 +1,6 @@
 {
     "intents": [
         {
-            "tag": "exam_registration",
-            "patterns": [
-                "Kad je prijava ispita",
-                "Kad je sledeći ispitni rok?",
-                "Kad je sledeca prijava ispita",
-                "Kad je prijava ispita za ispit",
-                "Kad je prijava ispita za ispit iz",
-                "Kad mogu da polažem sledeći ispit?",
-                "Kad se održava naredni ispitni rok?",
-                "Kad su prijave za sledeći ispitni rok?"
-            ],
-            "responses": [
-                "Kad je prijava ispita"
-            ]
-        },
-        {
             "tag": "professor_subject",
             "patterns": [
                 "Koji profesor predaje",
@@ -89,6 +73,27 @@
             "responses": [
                 "Gde je kabinet"
             ]
+        },
+        {
+            "tag": "exam_schedule",
+            "patterns": [
+                "Kad je ispit",
+                "Kad je ispit iz",
+                "Kada je ispit",
+                "Kada je ispit iz",
+                "Kada se održava ispit",
+                "Kada se održava ispit iz",
+                "Kada je sledeći ispit",
+                "Kada je sledeći ispit iz",
+                "Kada je sledeći ispit iz predmeta",
+                "Kada je sledeći ispit iz kursa",
+                "Kad se polaze predmet"
+            ],
+            "responses": [
+                "Kad je ispit"
+            ]
         }
     ]
 }
+
+

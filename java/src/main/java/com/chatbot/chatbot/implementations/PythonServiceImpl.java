@@ -78,6 +78,7 @@ public class PythonServiceImpl implements PythonService {
         return subjects;
     }
 
+    @Cacheable("schedule")
     @Override
     public List<YearExams> getExamSchedule() throws JSONException {
         List<YearExams> examSchedule = new ArrayList<>();

@@ -9,6 +9,7 @@ import com.chatbot.chatbot.utils.LatinUtil;
 import org.json.JSONException;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static com.chatbot.chatbot.utils.LevenshteinUtil.findMostSimilarDistance;
@@ -19,6 +20,12 @@ public class QuestionServiceImpl implements QuestionService {
     private static final String UNSUPPORTED_QUESTION = "Ne umem da odgovorim na ovo pitanje";
     private static final int MINIMAL_NAME_LENGTH = 2;
     private static final int NO_MINIMAL_LENGTH = 0;
+    private static final int DEFAULT_DATE_LENGTH = 6;
+    private static final String JUNE = "Jun";
+    private static final String JULY = "Jul";
+    private static final String AUGUST = "Avgust";
+    private static final String SEPTEMBER = "Septembar";
+
     private final PythonService pythonService;
     private final EmployeeDao employeeDao;
 
@@ -33,6 +40,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     private String processQuestion(Question question, String message) throws JSONException {
+        message = message.toLowerCase();
         return switch (question) {
             case EXAM_REGISTRATION -> processExamRegistration();
             case PROFESSOR_SUBJECT -> processProfessorSubject(message);
@@ -40,12 +48,88 @@ public class QuestionServiceImpl implements QuestionService {
             case CONSULTATIONS -> processConsultations(message);
             case CONTACT_EMAIL -> predictEmail(message);
             case OFFICE_LOCATION -> processOfficeLocation(message);
+            case EXAM_SCHEDULE ->  predictExamSchedule(message);
             default -> processUnsupportedMessage();
         };
     }
 
-    private String processExamRegistration() {
+    private String predictExamSchedule(String question) throws JSONException {
+        YearExams predictedYear = null;
+        Exam predictedExam = null;
+        int minDistance = Integer.MAX_VALUE;
+
+        List<YearExams> schedule = pythonService.getExamSchedule();
+
+        for (YearExams yearExam : schedule) {
+            for (Exam exam : yearExam.getExams()) {
+                int currentDistance = calculateCurrentDistance(question, exam.getName(), NO_MINIMAL_LENGTH);
+                int initialDistance = calculateCurrentDistance(question, exam.getInitials(), NO_MINIMAL_LENGTH);
+
+                if (currentDistance < minDistance || initialDistance == 0) {
+                    predictedYear = yearExam;
+                    predictedExam = exam;
+                    minDistance = initialDistance == 0 ? initialDistance : currentDistance;
+                }
+            }
+        }
+
+        String predictedMonthName = predictMonth(question);
+        String predictedMonthTime = null;
+        int timeIndex = -1;
+
+        if (predictedYear != null && predictedYear.getMonths() != null) {
+            List<Month> months = predictedYear.getMonths();
+            for (int i=0; i<months.size(); i++) {
+                Month month = months.get(i);
+                if (month.getName().equals(predictedMonthName)) {
+                    predictedMonthTime = month.getTime();
+                    timeIndex = i;
+                }
+            }
+        }
+
+        String examDate = timeIndex>=0 && timeIndex<predictedExam.getDates().size() ? predictedExam.getDates().get(timeIndex) : null;
+        String responseMessage;
+
+        if (predictedMonthName != null && examDate != null) {
+            if (examDate.length() > DEFAULT_DATE_LENGTH) {
+                responseMessage = "Ispit ce biti odrzan " + examDate;
+            } else {
+                responseMessage = "Ispit ce biti odrzan " + examDate + " u " + predictedMonthTime;
+            }
+        } else {
+            responseMessage = "Tekst pitanja mora da sadrzi rok u kojem se ispit odrzava (jun, junski..)";
+        }
+
+        return responseMessage;
+    }
+
+    public String predictMonth(String question) {
+        List<String> june = Arrays.asList("jun", "junu", "junski", "junskom");
+        List<String> july = Arrays.asList("jul", "julu", "julski", "julskom");
+        List<String> august = Arrays.asList("avgust", "avgustu", "avgustovski", "avgustovskom");
+        List<String> september = Arrays.asList("septembar", "septembru", "septembarski", "septembarskom");
+
+        String month;
+        month = checkMonth(question, june, JUNE) != null ? checkMonth(question, june, JUNE) : null;
+        month = checkMonth(question, july, JULY) != null ? checkMonth(question, july, JULY) : month;
+        month = checkMonth(question, august, AUGUST) != null ? checkMonth(question, august, AUGUST) : month;
+        month = checkMonth(question, september, SEPTEMBER) != null ? checkMonth(question, september, SEPTEMBER) : month;
+
+        return month;
+    }
+
+    private String checkMonth(String question, List<String> month, String response) {
+        for (String word : month) {
+            if (calculateCurrentDistance(question, word, NO_MINIMAL_LENGTH) == 0) {
+                return response;
+            }
+        }
         return null;
+    }
+
+    private String processExamRegistration() {
+        return processUnsupportedMessage();
     }
 
     private String processProfessorSubject(String question) throws JSONException {
