@@ -1,6 +1,7 @@
-import pdfplumber
-import string_utils
 from models import Exam, YearExams
+
+import string_utils
+import pdfplumber
 
 def get_exam_schedule():
     exam_schedules = []

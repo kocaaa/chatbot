@@ -20,9 +20,8 @@ services:
       MYSQL_ROOT_PASSWORD: root
   python:
     build: ./python
+    environment:
+      - APP_ENV=pro
     restart: always
     ports:
       - 10046:10046
-networks:
-  mynetwork:
-    driver: bridge
