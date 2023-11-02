@@ -1,14 +1,13 @@
-import random
-import json
-import pickle
-import numpy as np
+from keras.layers import Dense, Dropout
+from nltk.stem import WordNetLemmatizer
+from keras.models import Sequential
 
 import tensorflow as tf
-from keras.models import Sequential
-from keras.layers import Dense, Dropout
-
+import numpy as np
+import pickle
+import random
+import json
 import nltk
-from nltk.stem import WordNetLemmatizer
 
 def train():
     nltk.download('punkt')

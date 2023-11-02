@@ -1,17 +1,16 @@
-import json
-import uvicorn
 from models import Message, Response
 from fastapi import FastAPI
+import uvicorn
+import json
+import os
 
-import pdf
-import excel
 import chatbot
-import training
+import excel
+import pdf
 
-host = "127.0.0.1"
+app_env = os.environ.get('APP_ENV', 'dev')
+host = "0.0.0.0" if app_env == "pro" else "127.0.0.1"
 port = 10046
-
-training.train()
 
 intents = json.loads(open('intents.json').read())
 app = FastAPI()

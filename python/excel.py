@@ -1,10 +1,11 @@
-import pandas as pd
-import string_utils
 from models import Class
 
+import pandas as pd
+import string_utils
+
 CLASS = "Predmet"
+ASSISTANT = "Saradnik" 
 PROFESSOR = "Nastavnik"
-ASSISTANT = "Saradnik"
 INVALID_VALUES = ["nan", "Vezbe", "Saradnik", "mentor"]
 
 def get_all_subjects():
@@ -12,7 +13,7 @@ def get_all_subjects():
     
     dataframe = string_utils.convert_dataframe(dataframe)
     dataframe = dataframe[["Unnamed: 1", "Unnamed: 6", "Unnamed: 8"]]
-    dataframe.rename(columns={"Unnamed: 1":CLASS, "Unnamed: 6":PROFESSOR,"Unnamed: 8":ASSISTANT},inplace=True)
+    dataframe.rename(columns={"Unnamed: 1":CLASS, "Unnamed: 6":PROFESSOR,"Unnamed: 8":ASSISTANT}, inplace=True)
     dataframe.reset_index(inplace=True)
         
     classes = []
