@@ -1,6 +1,5 @@
 package com.chatbot.chatbot.controllers;
 
-import com.chatbot.chatbot.models.Subject;
 import com.chatbot.chatbot.models.YearExams;
 import com.chatbot.chatbot.services.PythonService;
 import lombok.extern.slf4j.Slf4j;

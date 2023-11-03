@@ -24,12 +24,6 @@ public class CourseController {
     private final PythonService pythonService;
     private final CourseDao courseDao;
 
-//    @Deprecated
-//    @GetMapping("/all")
-//    public List<Course> getAllCourses(){
-//        return seleniumService.getAllCourses();
-//    }
-
     @PostMapping("/populate")
     public List<Course> populateCourses() {
         List<Course> courses = seleniumService.getAllCourses();
