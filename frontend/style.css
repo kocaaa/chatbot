@@ -20,9 +20,9 @@ html {
     --primary: #094b85;
 }
 
-/* CHATBOX
+/* CHATBOT
 =============== */
-.chatbox {
+.chatbot {
     position: absolute;
     bottom: 30px;
     right: 30px;
@@ -32,7 +32,7 @@ html {
 }
 
 /* CONTENT IS CLOSE */
-.chatbox__support {
+.chatbot__support {
     display: flex;
     flex-direction: column;
     background: #eee;
@@ -45,7 +45,7 @@ html {
 }
 
 /* CONTENT ISOPEN */
-.chatbox--active {
+.chatbot--active {
     transform: translateY(-10px);
     z-index: 123456;
     opacity: 1;
@@ -53,7 +53,7 @@ html {
 }
 
 /* BUTTON */
-.chatbox__button {
+.chatbot__button {
     text-align: right;
 }
 
@@ -69,14 +69,14 @@ html {
 
 
 /* HEADER */
-.chatbox__header {
+.chatbot__header {
     position: sticky;
     top: 0;
     background: orange;
 }
 
 /* MESSAGES */
-.chatbox__messages {
+.chatbot__messages {
     margin-top: auto;
     display: flex;
     overflow-y: scroll;
@@ -98,12 +98,12 @@ html {
 }
 
 /* FOOTER */
-.chatbox__footer {
+.chatbot__footer {
     position: sticky;
     bottom: 0;
 }
 
-.chatbox__support {
+.chatbot__support {
     background: #f9f9f9;
     height: 450px;
     width: 350px;
@@ -113,7 +113,7 @@ html {
 }
 
 /* HEADER */
-.chatbox__header {
+.chatbot__header {
     background: var(--primaryGradient);
     display: flex;
     flex-direction: row;
@@ -125,22 +125,22 @@ html {
     box-shadow: var(--primaryBoxShadow);
 }
 
-.chatbox__image--header {
+.chatbot__image--header {
     margin-right: 10px;
 }
 
-.chatbox__heading--header {
+.chatbot__heading--header {
     font-size: 1.2rem;
     color: white;
 }
 
-.chatbox__description--header {
+.chatbot__description--header {
     font-size: .9rem;
     color: white;
 }
 
 /* Messages */
-.chatbox__messages {
+.chatbot__messages {
     padding: 0 20px;
 }
 
@@ -167,7 +167,7 @@ html {
 }
 
 /* FOOTER */
-.chatbox__footer {
+.chatbot__footer {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -180,7 +180,7 @@ html {
     margin-top: 20px;
 }
 
-.chatbox__footer input {
+.chatbot__footer input {
     width: 80%;
     border: none;
     padding: 10px 10px;
@@ -188,13 +188,13 @@ html {
     text-align: left;
 }
 
-.chatbox__send--footer {
+.chatbot__send--footer {
     color: white;
 }
 
-.chatbox__button button,
-.chatbox__button button:focus,
-.chatbox__button button:visited {
+.chatbot__button button,
+.chatbot__button button:focus,
+.chatbot__button button:visited {
     padding: 10px;
     background: white;
     border: none;
