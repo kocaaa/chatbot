@@ -10,14 +10,14 @@ body {
     font-size: 100%;
     background: #F1F1F1;
 }
-
+/* d 11538C l 139DF2 */
 *,
 html {
-    --primaryGradient: linear-gradient(93.12deg, #094b85 0.52%, #5693c8 100%);
-    --secondaryGradient: linear-gradient(268.91deg, #094b85 -2.14%, #5693c8 99.69%);
+    --primaryGradient: linear-gradient(93.12deg, #139DF2 0.52%, #11538C 100%);
+    --secondaryGradient: linear-gradient(268.91deg, #139DF2 -2.14%, #11538C 99.69%);
     --primaryBoxShadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
     --secondaryBoxShadow: 0px -10px 15px rgba(0, 0, 0, 0.1);
-    --primary: #094b85;
+    --primary: #139DF2;
 }
 
 /* CHATBOT
@@ -60,9 +60,9 @@ html {
 .send__button {
     padding: 10px 15px;
     margin-left: 15px;
-    background: #5693c8;
-    border: #094b85;
-    outline: #094b85;
+    background: #11538C;
+    border: #139DF2;
+    outline: #139DF2;
     cursor: pointer;
     border-radius: 30px;
 }
@@ -110,6 +110,8 @@ html {
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
 }
 
 /* HEADER */
@@ -204,4 +206,4 @@ html {
     border-bottom-left-radius: 50px;
     box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
     cursor: pointer;
-}
+} 
