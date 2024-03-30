@@ -12,6 +12,8 @@ import java.util.List;
 @Service
 public interface PythonService {
     PyResponse getChatBotResponse(PyMessage message) throws JSONException;
+
     List<Subject> getAllSubjects() throws JSONException;
+
     List<YearExams> getExamSchedule() throws JSONException;
 }

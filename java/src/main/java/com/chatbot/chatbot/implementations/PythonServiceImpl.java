@@ -5,7 +5,6 @@ import com.chatbot.chatbot.models.PyResponse;
 import com.chatbot.chatbot.models.Subject;
 import com.chatbot.chatbot.models.YearExams;
 import com.chatbot.chatbot.services.PythonService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
@@ -31,10 +30,10 @@ import java.util.List;
 @Slf4j
 @Service
 public class PythonServiceImpl implements PythonService {
-    private final String fastApiEndpoint;
     private static final String CHAT_BOT_ENDPOINT = "/question";
     private static final String SUBJECTS_ENDPOINT = "/all_subjects";
     private static final String EXAM_SCHEDULE_ENDPOINT = "/all_exam_schedules";
+    private final String fastApiEndpoint;
 
     @Autowired
     public PythonServiceImpl(@Value("${python.fastapi.chatbot.endpoint}") String fastApiEndpoint) {
@@ -145,7 +144,7 @@ public class PythonServiceImpl implements PythonService {
                             .initials(jsonObject.getString("initials"))
                             .professor(jsonObject.getString("professor"))
                             .assistants(assistants)
-                        .build()
+                            .build()
             );
         }
 

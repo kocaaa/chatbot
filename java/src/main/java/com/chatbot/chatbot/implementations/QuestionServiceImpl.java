@@ -34,6 +34,18 @@ public class QuestionServiceImpl implements QuestionService {
         this.employeeDao = employeeDao;
     }
 
+    private static int calculateCurrentDistance(String question, String stringToFind, int minLength) {
+        int currentDistance = 0;
+        String[] names = LatinUtil.convertToLowerAlphabet(stringToFind).split("[\\s-]+");
+
+        for (String name : names) {
+            if (name.length() > minLength) {
+                currentDistance += findMostSimilarDistance(name, question);
+            }
+        }
+        return currentDistance;
+    }
+
     @Override
     public String processResponse(PyResponse response, PyMessage message) throws JSONException {
         return processQuestion(response.getQuestion(), message.getQuestion());
@@ -48,7 +60,7 @@ public class QuestionServiceImpl implements QuestionService {
             case CONSULTATIONS -> processConsultations(message);
             case CONTACT_EMAIL -> predictEmail(message);
             case OFFICE_LOCATION -> processOfficeLocation(message);
-            case EXAM_SCHEDULE ->  predictExamSchedule(message);
+            case EXAM_SCHEDULE -> predictExamSchedule(message);
             default -> processUnsupportedMessage();
         };
     }
@@ -79,7 +91,7 @@ public class QuestionServiceImpl implements QuestionService {
 
         if (predictedYear != null && predictedYear.getMonths() != null) {
             List<Month> months = predictedYear.getMonths();
-            for (int i=0; i<months.size(); i++) {
+            for (int i = 0; i < months.size(); i++) {
                 Month month = months.get(i);
                 if (month.getName().equals(predictedMonthName)) {
                     predictedMonthTime = month.getTime();
@@ -88,7 +100,7 @@ public class QuestionServiceImpl implements QuestionService {
             }
         }
 
-        String examDate = timeIndex>=0 && timeIndex<predictedExam.getDates().size() ? predictedExam.getDates().get(timeIndex) : null;
+        String examDate = timeIndex >= 0 && timeIndex < predictedExam.getDates().size() ? predictedExam.getDates().get(timeIndex) : null;
         String responseMessage;
 
         if (predictedMonthName != null && examDate != null) {
@@ -137,7 +149,7 @@ public class QuestionServiceImpl implements QuestionService {
         String predictedProfessor;
 
         if (predictedSubject != null) {
-            predictedProfessor = "Predmet " + predictedSubject.getName() + " predaje " +  predictedSubject.getProfessor();
+            predictedProfessor = "Predmet " + predictedSubject.getName() + " predaje " + predictedSubject.getProfessor();
         } else {
             predictedProfessor = "Nisam uspeo da pronadjem informacije o predmetu.";
         }
@@ -170,7 +182,7 @@ public class QuestionServiceImpl implements QuestionService {
         String predictedAssistants;
 
         if (predictedSubject != null) {
-            predictedAssistants = "Asistenti na " + predictedSubject.getName() + " su " +  String.join(", ", predictedSubject.getAssistants());
+            predictedAssistants = "Asistenti na " + predictedSubject.getName() + " su " + String.join(", ", predictedSubject.getAssistants());
         } else {
             predictedAssistants = "Nisam uspeo da pronadjem asistente na predmetu.";
         }
@@ -183,9 +195,9 @@ public class QuestionServiceImpl implements QuestionService {
         String predictedConsultations;
 
         if (predictedEmployee != null && !predictedEmployee.getConsultation().isBlank() && !predictedEmployee.getName().isBlank()) {
-            predictedConsultations = predictedEmployee.getName() + " drzi konsultacije u sledecim terminima: " +  predictedEmployee.getConsultation();
+            predictedConsultations = predictedEmployee.getName() + " drzi konsultacije u sledecim terminima: " + predictedEmployee.getConsultation();
         } else if (predictedEmployee != null && predictedEmployee.getName() != null) {
-            predictedConsultations = "Nisam uspeo da pronadjem termin konsultacija kod " +  predictedEmployee.getName();
+            predictedConsultations = "Nisam uspeo da pronadjem termin konsultacija kod " + predictedEmployee.getName();
         } else {
             predictedConsultations = "Nisam uspeo da pronadjem validan termin konsultacija.";
         }
@@ -198,9 +210,9 @@ public class QuestionServiceImpl implements QuestionService {
         String predictedEmail;
 
         if (predictedEmployee != null && !predictedEmployee.getEmail().isBlank() && !predictedEmployee.getName().isBlank()) {
-            predictedEmail = "Email od " + predictedEmployee.getName() + " je " +  predictedEmployee.getEmail();
+            predictedEmail = "Email od " + predictedEmployee.getName() + " je " + predictedEmployee.getEmail();
         } else if (predictedEmployee != null && predictedEmployee.getName() != null) {
-            predictedEmail = "Nisam uspeo da pronadjem email od " +  predictedEmployee.getName() +  ".";
+            predictedEmail = "Nisam uspeo da pronadjem email od " + predictedEmployee.getName() + ".";
         } else {
             predictedEmail = "Nisam uspeo da pronadjem validan email.";
         }
@@ -228,26 +240,14 @@ public class QuestionServiceImpl implements QuestionService {
         return predictedEmployee;
     }
 
-    private static int calculateCurrentDistance(String question, String stringToFind, int minLength) {
-        int currentDistance = 0;
-        String[] names = LatinUtil.convertToLowerAlphabet(stringToFind).split("[\\s-]+");
-
-        for (String name : names) {
-            if (name.length() > minLength) {
-                currentDistance += findMostSimilarDistance(name, question);
-            }
-        }
-        return currentDistance;
-    }
-
     private String processOfficeLocation(String question) {
         Employee predictedEmployee = predictEmployee(question);
         String predictedOfficeLocation;
 
         if (predictedEmployee != null && !predictedEmployee.getCabinet().isBlank() && !predictedEmployee.getName().isBlank()) {
-            predictedOfficeLocation = predictedEmployee.getName() + " mozete naći u kabinetu " +  predictedEmployee.getCabinet();
+            predictedOfficeLocation = predictedEmployee.getName() + " mozete naći u kabinetu " + predictedEmployee.getCabinet();
         } else if (predictedEmployee != null && predictedEmployee.getName() != null) {
-            predictedOfficeLocation = "Nisam uspeo da pronadjem kabinet od " +  predictedEmployee.getName() +  ".";
+            predictedOfficeLocation = "Nisam uspeo da pronadjem kabinet od " + predictedEmployee.getName() + ".";
         } else {
             predictedOfficeLocation = "Nisam uspeo da pronadjem validan kabinet.";
         }

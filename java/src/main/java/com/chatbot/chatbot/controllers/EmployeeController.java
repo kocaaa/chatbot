@@ -22,7 +22,7 @@ public class EmployeeController {
     private final EmployeeDao employeeDao;
 
     @GetMapping("/all")
-    public List<Employee> getAllEmployees(){
+    public List<Employee> getAllEmployees() {
         return seleniumService.getAllEmployees();
     }
 
