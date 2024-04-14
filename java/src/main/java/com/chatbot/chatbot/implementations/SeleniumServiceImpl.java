@@ -2,7 +2,7 @@ package com.chatbot.chatbot.implementations;
 
 import com.chatbot.chatbot.models.Course;
 import com.chatbot.chatbot.models.Employee;
-import com.chatbot.chatbot.models.ExaminationPeriod;
+import com.chatbot.chatbot.models.ExamRegistration;
 import com.chatbot.chatbot.services.SeleniumService;
 import com.chatbot.chatbot.utils.LatinUtil;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -16,29 +16,12 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import static com.chatbot.chatbot.constants.Constants.*;
 
 @Service
 public class SeleniumServiceImpl implements SeleniumService {
-    public static final String DIV_CUSTOM_PANEL = "div.custom-panel";
-    public static final String ROW_SELECTOR = "div.row:not(div.row > div.row)";
-    private static final String EMPLOYEE_URL = "https://imi.pmf.kg.ac.rs/nastavno-osoblje";
-    private static final String MOODLE_URL = "https://imi.pmf.kg.ac.rs/moodle/";
-    private static final String EXAMINATION_PERIODS_URL = "https://www.pmf.kg.ac.rs/?id=527";
-    private static final String REGISTRATION_STRING = "ПРИЈАВЉИВАЊЕ ИСПИТА ЗА";
-    private static final String EMPLOYEE_ROW_CLASS = "nastavnici_row";
-    private static final String EMPLOYEE_CELL_NAME = "ime_nastavnika";
-    private static final String EMPLOYEE_CELL_TITLE = "zvanje_nastavnika";
-    private static final String EMPLOYEE_CELL_CABINET = "kabinet_nastavnika";
-    private static final String EMPLOYEE_CELL_LOCALE = "lokal_nastavnika";
-    private static final String EMPLOYEE_CELL_EMAIL = "mail_nastavnika";
-    private static final String EMPLOYEE_CELL_CONSULTATION = "konsultacije_nastavnika";
-    private static final String PARTIAL_LINK_YEAR = " godina";
-    private static final String PARTIAL_LINK_SEMESTER = " semestar";
-    private static final String HREF_TAG = "href";
-    private static final List<String> OAS_LIST = Arrays.asList("OAS MATEMATIKE", "OAS INFORMATIKE");
-    private static final List<String> MAS_LIST = Arrays.asList("MAS MATEMATIKE", "MAS INFORMATIKE");
     private WebDriver webDriver;
 
     private void setUp(String url) {
@@ -57,10 +40,10 @@ public class SeleniumServiceImpl implements SeleniumService {
     }
 
     @Override
-    public List<ExaminationPeriod> getAllExaminationPeriods() {
+    public List<ExamRegistration> getAllExaminationPeriods() {
         setUp(EXAMINATION_PERIODS_URL);
 
-        List<ExaminationPeriod> examinationPeriods = new ArrayList<>();
+        List<ExamRegistration> examRegistrations = new ArrayList<>();
 
         List<WebElement> examinationPeriodElements = webDriver.findElements(By.cssSelector(DIV_CUSTOM_PANEL))
                 .get(0)
@@ -70,14 +53,14 @@ public class SeleniumServiceImpl implements SeleniumService {
         return extractExaminationPeriods(examinationPeriodElements);
     }
 
-    private List<ExaminationPeriod> extractExaminationPeriods(List<WebElement> examinationPeriodElements) {
-        List<ExaminationPeriod> examinationPeriods = new ArrayList<>();
+    private List<ExamRegistration> extractExaminationPeriods(List<WebElement> examinationPeriodElements) {
+        List<ExamRegistration> examRegistrations = new ArrayList<>();
 
         for (WebElement element : examinationPeriodElements) {
             List<String> strings = List.of(element.getText().split("\n"));
 
-            examinationPeriods.add(
-                    ExaminationPeriod.builder()
+            examRegistrations.add(
+                    ExamRegistration.builder()
                             .month(LatinUtil.convertCyrillicToLatin(strings.get(0)).toLowerCase())
                             .date(LatinUtil.convertCyrillicToLatin(getExaminationPeriodDate(strings)).toLowerCase())
                             .build()
@@ -86,7 +69,7 @@ public class SeleniumServiceImpl implements SeleniumService {
 
         webDriver.quit();
 
-        return examinationPeriods;
+        return examRegistrations;
     }
 
     private String getExaminationPeriodDate(List<String> list) {

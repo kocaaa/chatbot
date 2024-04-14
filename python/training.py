@@ -14,7 +14,7 @@ def train():
     nltk.download('wordnet')
     
     lemmatizer = WordNetLemmatizer()
-    intents = json.loads(open('intents.json').read())
+    intents = json.loads(open('intents.json', encoding="utf8").read())
     words = []
     classes = []
     documents = []

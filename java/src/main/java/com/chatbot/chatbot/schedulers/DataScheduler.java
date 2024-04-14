@@ -1,7 +1,7 @@
 package com.chatbot.chatbot.schedulers;
 
-import com.chatbot.chatbot.models.ExaminationPeriod;
-import com.chatbot.chatbot.repositories.ExaminationPeriodDao;
+import com.chatbot.chatbot.models.ExamRegistration;
+import com.chatbot.chatbot.repositories.ExamRegistrationDao;
 import com.chatbot.chatbot.services.SeleniumService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,25 +16,25 @@ import java.util.List;
 @Component
 public class DataScheduler {
     private final SeleniumService seleniumService;
-    private final ExaminationPeriodDao examinationPeriodDao;
+    private final ExamRegistrationDao examRegistrationDao;
 
     @Autowired
-    public DataScheduler(SeleniumService seleniumService, ExaminationPeriodDao examinationPeriodDao) {
+    public DataScheduler(SeleniumService seleniumService, ExamRegistrationDao examRegistrationDao) {
         this.seleniumService = seleniumService;
-        this.examinationPeriodDao = examinationPeriodDao;
+        this.examRegistrationDao = examRegistrationDao;
     }
 
     @Scheduled(cron = "0 0 0 * * ?")
     @EventListener(ApplicationReadyEvent.class)
     public void scheduleTaskUsingCronExpression() {
-        List<ExaminationPeriod> examinationPeriods = seleniumService.getAllExaminationPeriods();
+        List<ExamRegistration> examRegistrations = seleniumService.getAllExaminationPeriods();
 
-        if (!examinationPeriods.isEmpty()) {
-            examinationPeriodDao.deleteAll();
-            examinationPeriodDao.saveAll(examinationPeriods);
+        if (!examRegistrations.isEmpty()) {
+            examRegistrationDao.deleteAll();
+            examRegistrationDao.saveAll(examRegistrations);
         }
 
-        log.info("Successfully saved {} examination periods", examinationPeriods.size());
+        log.info("Successfully saved {} examination periods", examRegistrations.size());
     }
 
 }

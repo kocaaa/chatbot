@@ -27,12 +27,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.chatbot.chatbot.constants.Constants.*;
+
 @Slf4j
 @Service
 public class PythonServiceImpl implements PythonService {
-    private static final String CHAT_BOT_ENDPOINT = "/question";
-    private static final String SUBJECTS_ENDPOINT = "/all_subjects";
-    private static final String EXAM_SCHEDULE_ENDPOINT = "/all_exam_schedules";
     private final String fastApiEndpoint;
 
     @Autowired
@@ -52,8 +51,7 @@ public class PythonServiceImpl implements PythonService {
             JSONObject responseJSON = getResponseJSON(response.getEntity());
             pyResponse = new PyResponse(responseJSON);
         } catch (IOException e) {
-            log.error("Error occurred while sending POST request to FastAPI");
-            e.printStackTrace();
+            log.error("Error occurred while sending POST request to FastAPI.", e);
         }
 
         return pyResponse;
@@ -66,12 +64,10 @@ public class PythonServiceImpl implements PythonService {
 
         try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
             HttpResponse response = getResponse(httpClient, SUBJECTS_ENDPOINT);
-
             String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
             subjects = parseToSubjects(new JSONArray(responseString));
         } catch (IOException e) {
-            log.error("Error occurred while sending POST request to FastAPI");
-            e.printStackTrace();
+            log.error("Error occurred while sending POST request to FastAPI", e);
         }
 
         return subjects;
@@ -84,12 +80,10 @@ public class PythonServiceImpl implements PythonService {
 
         try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
             HttpResponse response = getResponse(httpClient, EXAM_SCHEDULE_ENDPOINT);
-
             String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
             examSchedule = parseExamSchedule(new JSONArray(responseString));
         } catch (IOException e) {
-            log.error("Error occurred while sending POST request to FastAPI");
-            e.printStackTrace();
+            log.error("Error occurred while sending POST request to FastAPI", e);
         }
 
         return examSchedule;

@@ -3,35 +3,30 @@ package com.chatbot.chatbot.implementations;
 import com.chatbot.chatbot.enums.Question;
 import com.chatbot.chatbot.models.*;
 import com.chatbot.chatbot.repositories.EmployeeDao;
+import com.chatbot.chatbot.repositories.ExamRegistrationDao;
 import com.chatbot.chatbot.services.PythonService;
 import com.chatbot.chatbot.services.QuestionService;
 import com.chatbot.chatbot.utils.LatinUtil;
 import org.json.JSONException;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.chatbot.chatbot.constants.Constants.*;
 import static com.chatbot.chatbot.utils.LevenshteinUtil.findMostSimilarDistance;
 
 @Service
 public class QuestionServiceImpl implements QuestionService {
-
-    private static final String UNSUPPORTED_QUESTION = "Ne umem da odgovorim na ovo pitanje";
-    private static final int MINIMAL_NAME_LENGTH = 2;
-    private static final int NO_MINIMAL_LENGTH = 0;
-    private static final int DEFAULT_DATE_LENGTH = 6;
-    private static final String JUNE = "Jun";
-    private static final String JULY = "Jul";
-    private static final String AUGUST = "Avgust";
-    private static final String SEPTEMBER = "Septembar";
-
     private final PythonService pythonService;
     private final EmployeeDao employeeDao;
+    private final ExamRegistrationDao examRegistrationDao;
 
-    public QuestionServiceImpl(PythonService pythonService, EmployeeDao employeeDao) {
+    public QuestionServiceImpl(PythonService pythonService, EmployeeDao employeeDao, ExamRegistrationDao examRegistrationDao) {
         this.pythonService = pythonService;
         this.employeeDao = employeeDao;
+        this.examRegistrationDao = examRegistrationDao;
     }
 
     private static int calculateCurrentDistance(String question, String stringToFind, int minLength) {
@@ -54,15 +49,20 @@ public class QuestionServiceImpl implements QuestionService {
     private String processQuestion(Question question, String message) throws JSONException {
         message = message.toLowerCase();
         return switch (question) {
-            case EXAM_REGISTRATION -> processExamRegistration();
             case PROFESSOR_SUBJECT -> processProfessorSubject(message);
             case ASSISTANT_SUBJECT -> processAssistantSubject(message);
             case CONSULTATIONS -> processConsultations(message);
             case CONTACT_EMAIL -> predictEmail(message);
             case OFFICE_LOCATION -> processOfficeLocation(message);
             case EXAM_SCHEDULE -> predictExamSchedule(message);
+            case EXAM_REGISTRATION -> processExamRegistration(message);
+            case MODULES -> processModules();
             default -> processUnsupportedMessage();
         };
+    }
+
+    private String processModules() {
+        return null;
     }
 
     private String predictExamSchedule(String question) throws JSONException {
@@ -123,10 +123,39 @@ public class QuestionServiceImpl implements QuestionService {
         List<String> september = Arrays.asList("septembar", "septembru", "septembarski", "septembarskom");
 
         String month;
+
         month = checkMonth(question, june, JUNE) != null ? checkMonth(question, june, JUNE) : null;
         month = checkMonth(question, july, JULY) != null ? checkMonth(question, july, JULY) : month;
         month = checkMonth(question, august, AUGUST) != null ? checkMonth(question, august, AUGUST) : month;
         month = checkMonth(question, september, SEPTEMBER) != null ? checkMonth(question, september, SEPTEMBER) : month;
+
+        return month;
+    }
+
+    public String extendedPredictMonth(String question) {
+        String month = predictMonth(question);
+
+        if (month != null) {
+            return month;
+        }
+
+        List<String> january = Arrays.asList("januar", "januaru", "januarski", "januarskom");
+        List<String> february = Arrays.asList("februar", "februaru", "februarski", "februarskom");
+        List<String> march = Arrays.asList("mart", "martu", "martovski", "martovskom");
+        List<String> april = Arrays.asList("april", "aprilu", "aprilsli", "aprilskom");
+        List<String> may = Arrays.asList("maj", "maju", "majski", "majskom");
+        List<String> october = Arrays.asList("oktobar", "oktobru", "oktobarski", "oktobarskom");
+        List<String> november = Arrays.asList("novembar", "novembru", "novembarski", "novembarskom");
+        List<String> december = Arrays.asList("decembar", "decembru", "decembarski", "decembarskom");
+
+        month = checkMonth(question, january, JANUARY) != null ? checkMonth(question, january, JANUARY) : null;
+        month = checkMonth(question, february, FEBRUARY) != null ? checkMonth(question, february, FEBRUARY) : month;
+        month = checkMonth(question, march, MARCH) != null ? checkMonth(question, march, MARCH) : month;
+        month = checkMonth(question, april, APRIL) != null ? checkMonth(question, april, APRIL) : month;
+        month = checkMonth(question, may, MAY) != null ? checkMonth(question, may, MAY) : month;
+        month = checkMonth(question, october, OCTOBER) != null ? checkMonth(question, october, OCTOBER) : month;
+        month = checkMonth(question, november, NOVEMBER) != null ? checkMonth(question, november, NOVEMBER) : month;
+        month = checkMonth(question, december, DECEMBER) != null ? checkMonth(question, december, DECEMBER) : month;
 
         return month;
     }
@@ -140,8 +169,19 @@ public class QuestionServiceImpl implements QuestionService {
         return null;
     }
 
-    private String processExamRegistration() {
-        return processUnsupportedMessage();
+    private String processExamRegistration(String question) {
+        String month = extendedPredictMonth(question);
+
+        String response = "Tekst pitanja mora da sadrzi rok u kojem se ispit odrzava (jun, junski..)";
+
+        if (month != null) {
+            ExamRegistration examRegistration = examRegistrationDao.findByMonthContaining(month);
+            if (examRegistration != null) {
+                response = MessageFormat.format("Rok za prijavljivanje za {0} rok je {1}", examRegistration.getMonth(), examRegistration.getDate());
+            }
+        }
+
+        return response;
     }
 
     private String processProfessorSubject(String question) throws JSONException {

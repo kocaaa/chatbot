@@ -12,12 +12,12 @@ app_env = os.environ.get('APP_ENV', 'dev')
 host = "0.0.0.0" if app_env == "pro" else "127.0.0.1"
 port = 10046
 
-intents = json.loads(open('intents.json').read())
+intents = json.loads(open('intents.json', encoding="utf8").read())
 app = FastAPI()
 
 @app.post("/question")
 async def question(message: Message):
-    intents = chatbot.predict_class(message.question)
+    intents = chatbot.predict_class(message.question.lower())
     probability = float(intents[0]["probability"])
 
     if probability > chatbot.bad_input():

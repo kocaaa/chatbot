@@ -3,14 +3,14 @@
         {
             "tag": "professor_subject",
             "patterns": [
-                "Koji profesor predaje",
-                "Ko je profesor na",
-                "Ko je profesor",
-                "Ko predaje",
-                "Ko je profesor za",
-                "Ko je zadužen za",
-                "Ko predaje predmet",
-                "Ko predaje kurs"
+                "koji profesor predaje",
+                "ko je profesor na",
+                "ko je profesor",
+                "ko predaje",
+                "ko je profesor za",
+                "ko je zadužen za",
+                "ko predaje predmet",
+                "ko predaje kurs"
             ],
             "responses": [
                 "Koji profesor predaje"
@@ -19,14 +19,14 @@
         {
             "tag": "assistant_subject",
             "patterns": [
-                "Koji asistent je na",
-                "Koji asistent pomaže kod",
-                "Ko je asistent",
-                "Ko je asistent za",
-                "Ko je zadužen kao asistent za",
-                "Koji asistent radi na predmetu",
-                "Ko su asistenti na",
-                "Ko je asistent na"
+                "koji asistent je na",
+                "koji asistent pomaže kod",
+                "ko je asistent",
+                "ko je asistent za",
+                "ko je zadužen kao asistent za",
+                "koji asistent radi na predmetu",
+                "ko su asistenti na",
+                "ko je asistent na"
             ],
             "responses": [
                 "Ko je asistent je na"
@@ -35,12 +35,12 @@
         {
             "tag": "consultations",
             "patterns": [
-                "Kada su konsultacije kod",
-                "Koji su termini konsultacija kod",
-                "Kada mogu da posetim",
-                "Kada je dostupan",
-                "Kada su otvorene konsultacije kod",
-                "Kada je vreme konsultacija kod"
+                "kada su konsultacije kod",
+                "koji su termini konsultacija kod",
+                "kada mogu da posetim",
+                "kada je dostupan",
+                "kada su otvorene konsultacije kod",
+                "kada je vreme konsultacija kod"
             ],
             "responses": [
                 "Kada su konsultacije kod"
@@ -49,14 +49,14 @@
         {
             "tag": "contact_email",
             "patterns": [
-                "Koji je email profesora",
-                "Koji je email",
-                "Kako mogu da kontaktiram",
-                "Kako da pošaljem email",
-                "Kako da stupim u kontakt sa",
-                "Koji je mail profesora",
-                "Koji je mail",
-                "Kako da pošaljem mail"
+                "koji je email profesora",
+                "koji je email",
+                "kako mogu da kontaktiram",
+                "kako da pošaljem email",
+                "kako da stupim u kontakt sa",
+                "koji je mail profesora",
+                "koji je mail",
+                "kako da pošaljem mail"
             ],
             "responses": [
                 "Koji je email"
@@ -65,10 +65,10 @@
         {
             "tag": "office_location",
             "patterns": [
-                "Gde je kabinet",
-                "Koji je broj kabineta",
-                "Gde se nalazi kabinet",
-                "U kom kabinetu mogu da nadjem"
+                "gde je kabinet",
+                "koji je broj kabineta",
+                "kde se nalazi kabinet",
+                "u kom kabinetu mogu da nadjem"
             ],
             "responses": [
                 "Gde je kabinet"
@@ -77,20 +77,34 @@
         {
             "tag": "exam_schedule",
             "patterns": [
-                "Kad je ispit",
-                "Kad je ispit iz",
-                "Kada je ispit",
-                "Kada je ispit iz",
-                "Kada se održava ispit",
-                "Kada se održava ispit iz",
-                "Kada je sledeći ispit",
-                "Kada je sledeći ispit iz",
-                "Kada je sledeći ispit iz predmeta",
-                "Kada je sledeći ispit iz kursa",
-                "Kad se polaze predmet"
+                "kad je ispit",
+                "kad je ispit iz",
+                "kada je ispit",
+                "kada je ispit iz",
+                "kada se održava ispit",
+                "kada se održava ispit iz",
+                "kada je sledeći ispit",
+                "kada je sledeći ispit iz",
+                "kada je sledeći ispit iz predmeta",
+                "kada je sledeći ispit iz kursa",
+                "kad se polaze predmet"
             ],
             "responses": [
                 "Kad je ispit"
+            ]
+        },
+        {
+            "tag": "exam_registration",
+            "patterns": [
+                "kada je prijava ispita",
+                "ko kada mogu da se prijavim za ispit",
+                "kada je rok za prijavu ispita",
+                "kada se završava prijava za ispit",
+                "kada počinje prijava za ispitni rok",
+                "kada je krajnji rok za prijavu ispita"
+            ],
+            "responses": [
+                "Kad je prijava ispita"
             ]
         }
     ]
