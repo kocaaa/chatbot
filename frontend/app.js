@@ -7,8 +7,7 @@ class Chatbot {
         }
 
         this.state = false;
-        this.messages = [];
-
+        this.messages = [{ name: "Chatbot", message: "Zdravo, ja sam Imi Chatbot i stojim vam na raspolaganju za odgovore na pitanja o fakultetu." }];
         this.htmlMap = {
             '&': '&amp;',
             '<': '&lt;',
@@ -16,6 +15,8 @@ class Chatbot {
             '"': '&quot;',
             "'": '&apos;'
         };
+
+        this.updateChatText(this.args.chatBot);
     }
 
     escapeHtml(text) {
