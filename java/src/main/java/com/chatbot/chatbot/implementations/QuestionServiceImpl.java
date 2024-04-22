@@ -56,13 +56,9 @@ public class QuestionServiceImpl implements QuestionService {
             case OFFICE_LOCATION -> processOfficeLocation(message);
             case EXAM_SCHEDULE -> predictExamSchedule(message);
             case EXAM_REGISTRATION -> processExamRegistration(message);
-            case MODULES -> processModules();
+            case MODULES -> MODULES_RESPONSE;
             default -> processUnsupportedMessage();
         };
-    }
-
-    private String processModules() {
-        return null;
     }
 
     private String predictExamSchedule(String question) throws JSONException {
@@ -177,7 +173,7 @@ public class QuestionServiceImpl implements QuestionService {
         if (month != null) {
             ExamRegistration examRegistration = examRegistrationDao.findByMonthContaining(month);
             if (examRegistration != null) {
-                response = MessageFormat.format("Rok za prijavljivanje za {0} rok je {1}", examRegistration.getMonth(), examRegistration.getDate());
+                response = MessageFormat.format("Prijava ispita za {0} rok je {1}", examRegistration.getMonth(), examRegistration.getDate());
             }
         }
 

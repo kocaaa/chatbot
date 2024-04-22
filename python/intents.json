@@ -106,6 +106,22 @@
             "responses": [
                 "Kad je prijava ispita"
             ]
+        },
+        {
+            "tag": "modules",
+            "patterns": [
+                "koji moduli postoje",
+                "koji modul postoji",
+                "koji modul izabrati",
+                "koje module mogu da izaberem",
+                "koji su moduli na fakultetu",
+                "koji moduli su dostupni",
+                "koji su dostupni moduli",
+                "koje su opcije modula"
+            ],
+            "responses": [
+                "Koji moduli postoje"
+            ]   
         }
     ]
 }

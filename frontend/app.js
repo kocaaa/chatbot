@@ -8,6 +8,18 @@ class Chatbot {
 
         this.state = false;
         this.messages = [];
+
+        this.htmlMap = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&apos;'
+        };
+    }
+
+    escapeHtml(text) {
+        return { ...text, message: text.message.replace(/[&<>"']/g, m => this.htmlMap[m]) };
     }
 
     display() {
@@ -42,7 +54,7 @@ class Chatbot {
         }
 
         let msg1 = { name: "User", message: text1 }
-        this.messages.push(msg1);
+        this.messages.push(this.escapeHtml(msg1));
 
         fetch('http://localhost:8080/chatbot/getMessage', {
             method: 'POST',

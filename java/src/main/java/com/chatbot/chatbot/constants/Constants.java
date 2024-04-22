@@ -10,6 +10,7 @@ public class Constants {
     public static final String CHAT_BOT_ENDPOINT = "/question";
     public static final String SUBJECTS_ENDPOINT = "/all_subjects";
     public static final String EXAM_SCHEDULE_ENDPOINT = "/all_exam_schedules";
+    public static final String MODULES_RESPONSE = "Na našem fakultetu postoji tri modula. Studenti imaju mogućnost da odaberu jedan od ta tri modula od druge godine studija. Više o tome možete pročitati <a href=\"https://imi.pmf.kg.ac.rs/informatika-studije\" target=\"_blank\">ovde</a>.";
     public static final String UNSUPPORTED_QUESTION = "Ne umem da odgovorim na ovo pitanje.";
     public static final String JANUARY = "Januar";
     public static final String FEBRUARY = "Februar";
